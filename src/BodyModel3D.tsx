@@ -49,7 +49,6 @@ export default function BodyModel3D({markers,onMark,onRemove}:Props){
     const model=new THREE.Group();scene.add(model)
     const skin=new THREE.MeshStandardMaterial({color:'#d6bca9',roughness:.72,metalness:0})
     const joint=new THREE.MeshStandardMaterial({color:'#c7a994',roughness:.76})
-    const detail=new THREE.MeshStandardMaterial({color:'#b99d89',roughness:.8})
     const add=(geometry:THREE.BufferGeometry,material:THREE.Material,position:[number,number,number],scale:[number,number,number],kind:string,part='')=>{
       const mesh=new THREE.Mesh(geometry,material);mesh.position.set(...position);mesh.scale.set(...scale);mesh.userData={kind,part};model.add(mesh);return mesh
     }
