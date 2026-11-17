@@ -1,19 +1,20 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { Activity, ArrowLeft, ArrowUpRight, Bell, CalendarDays, Camera, Check, ChevronDown, ClipboardList, Clock3, FileText, HeartPulse, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, ShieldCheck, Users, X, History } from 'lucide-react'
 
+type Photo = { id:string; name:string; dataUrl:string; capturedAt:string }
 type Assessment = {
   id: string; date: string; time: string; exudate: string; exudateAmount: string;
   bed: string[]; perilesional: string[]; infection: string[]; pain: string;
-  length: string; width: string; depth: string; notes: string; coverage: string[];
+  length: string; width: string; depth: string; notes: string; coverage: string[]; photos:Photo[];
 }
-type Lesion = { id: string; name: string; location: string; etiology: string; started: string; assessments: Assessment[] }
+type Lesion = { id: string; name: string; location: string; bodySites:string[]; etiology: string; started: string; assessments: Assessment[] }
 type Patient = { id: string; name: string; initials: string; bed: string; last: string; status: string; lesions: Lesion[] }
 const seed: Patient[] = [
  {id:'DEMO-001',name:'Paciente demonstração 01',initials:'P1',bed:'Enfermaria · Leito 12',last:'Hoje, 09:40',status:'Em acompanhamento',lesions:[
-  {id:'L-001',name:'Lesão 01',location:'Região sacral',etiology:'Lesão por pressão',started:'12/11/2026',assessments:[{id:'A-001',date:'17/11/2026',time:'09:40',exudate:'Seroso',exudateAmount:'Pequena',bed:['Granulação'],perilesional:['Íntegra'],infection:[],pain:'2',length:'3,0',width:'2,0',depth:'0,2',notes:'Registro demonstrativo inicial.',coverage:['Espuma com silicone']}]},
-  {id:'L-002',name:'Lesão 02',location:'Membro inferior direito',etiology:'Úlcera venosa',started:'15/11/2026',assessments:[]}
+  {id:'L-001',name:'Lesão 01',location:'Região sacral',bodySites:['Sacro'],etiology:'Lesão por pressão',started:'12/11/2026',assessments:[{id:'A-001',date:'17/11/2026',time:'09:40',exudate:'Seroso',exudateAmount:'Pequena',bed:['Granulação'],perilesional:['Íntegra'],infection:[],pain:'2',length:'3,0',width:'2,0',depth:'0,2',notes:'Registro demonstrativo inicial.',coverage:['Espuma com silicone'],photos:[]}]},
+  {id:'L-002',name:'Lesão 02',location:'Membro inferior direito',bodySites:['Perna direita'],etiology:'Úlcera venosa',started:'15/11/2026',assessments:[]}
  ]},
- {id:'DEMO-002',name:'Paciente demonstração 02',initials:'P2',bed:'Enfermaria · Leito 08',last:'Ontem, 15:20',status:'Avaliação pendente',lesions:[{id:'L-003',name:'Lesão 01',location:'Calcâneo esquerdo',etiology:'Lesão por pressão',started:'10/11/2026',assessments:[]}]},
+ {id:'DEMO-002',name:'Paciente demonstração 02',initials:'P2',bed:'Enfermaria · Leito 08',last:'Ontem, 15:20',status:'Avaliação pendente',lesions:[{id:'L-003',name:'Lesão 01',location:'Calcâneo esquerdo',bodySites:['Calcâneo esquerdo'],etiology:'Lesão por pressão',started:'10/11/2026',assessments:[]}]},
  {id:'DEMO-003',name:'Paciente demonstração 03',initials:'P3',bed:'Enfermaria · Leito 21',last:'Ontem, 11:05',status:'Em acompanhamento',lesions:[]}
 ]
 const pages = [['Visão geral',LayoutDashboard],['Pacientes',Users],['Avaliações',ClipboardList],['Evolução fotográfica',Camera],['Relatórios',FileText]] as const
@@ -24,23 +25,25 @@ const coverOptions=['Gaze estéril','Soro fisiológico 0,9%','Alginato','Hidrofi
 const today=()=>new Date().toLocaleDateString('pt-BR')
 const now=()=>new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'})
 export default function App(){
- const [page,setPage]=useState('Visão geral'); const [patients,setPatients]=useState(seed); const [search,setSearch]=useState('')
+ const [page,setPage]=useState('Visão geral'); const [patients,setPatients]=useState<Patient[]>(()=>{try{const saved=localStorage.getItem('valiat-af-demo-v2');return saved?JSON.parse(saved) as Patient[]:seed}catch{return seed}}); const [search,setSearch]=useState('')
  const [selectedId,setSelectedId]=useState<string|null>(null); const [selectedLesionId,setSelectedLesionId]=useState<string|null>(null)
  const [modal,setModal]=useState<'patient'|'lesion'|'assessment'|null>(null); const [name,setName]=useState(''); const [bed,setBed]=useState('')
- const [lesionName,setLesionName]=useState(''); const [location,setLocation]=useState(''); const [etiology,setEtiology]=useState('Lesão por pressão')
+ const [lesionName,setLesionName]=useState(''); const [location,setLocation]=useState(''); const [bodySites,setBodySites]=useState<string[]>([]); const [etiology,setEtiology]=useState('Lesão por pressão'); const [bodyView,setBodyView]=useState<'Anterior'|'Posterior'>('Anterior'); const [photoDrafts,setPhotoDrafts]=useState<Photo[]>([]); const [compareA,setCompareA]=useState(''); const [compareB,setCompareB]=useState(''); const [storageWarning,setStorageWarning]=useState(false)
  const [exudate,setExudate]=useState('Seroso'); const [amount,setAmount]=useState('Pequena'); const [bedState,setBedState]=useState<string[]>([])
  const [peri,setPeri]=useState<string[]>([]); const [infection,setInfection]=useState<string[]>([]); const [pain,setPain]=useState('0')
  const [length,setLength]=useState(''); const [width,setWidth]=useState(''); const [depth,setDepth]=useState(''); const [notes,setNotes]=useState(''); const [coverage,setCoverage]=useState<string[]>([])
  const [menu,setMenu]=useState(false)
+ useEffect(()=>{try{localStorage.setItem('valiat-af-demo-v2',JSON.stringify(patients));setStorageWarning(false)}catch{setStorageWarning(true)}},[patients])
  const selected=patients.find(p=>p.id===selectedId)||null
  const lesion=selected?.lesions.find(l=>l.id===selectedLesionId)||null
  const filtered=useMemo(()=>patients.filter(p=>(p.name+p.id+p.bed).toLowerCase().includes(search.toLowerCase())),[patients,search])
  const updatePatient=(id:string,fn:(p:Patient)=>Patient)=>setPatients(prev=>prev.map(p=>p.id===id?fn(p):p))
- function resetLesion(){setLesionName('');setLocation('');setEtiology('Lesão por pressão')}
- function resetAssessment(){setExudate('Seroso');setAmount('Pequena');setBedState([]);setPeri([]);setInfection([]);setPain('0');setLength('');setWidth('');setDepth('');setNotes('');setCoverage([])}
+ function resetLesion(){setLesionName('');setLocation('');setBodySites([]);setBodyView('Anterior');setEtiology('Lesão por pressão')}
+ function resetAssessment(){setExudate('Seroso');setAmount('Pequena');setBedState([]);setPeri([]);setInfection([]);setPain('0');setLength('');setWidth('');setDepth('');setNotes('');setCoverage([]);setPhotoDrafts([])}
  function addPatient(){if(!name.trim())return;const initials=name.trim().split(/\s+/).slice(0,2).map(x=>x[0]).join('').toUpperCase();const p:Patient={id:'DEMO-'+String(patients.length+1).padStart(3,'0'),name:name.trim(),initials,bed:bed||'Local não informado',last:'Ainda sem avaliação',status:'Avaliação pendente',lesions:[]};setPatients([p,...patients]);setSelectedId(p.id);setName('');setBed('');setModal(null);setPage('Pacientes')}
- function addLesion(){if(!selected||!lesionName.trim()||!location.trim())return;const id='L-'+String(Date.now()).slice(-6);updatePatient(selected.id,p=>({...p,lesions:[...p.lesions,{id,name:lesionName.trim(),location:location.trim(),etiology,started:today(),assessments:[]}]}));setSelectedLesionId(id);resetLesion();setModal(null)}
- function addAssessment(){if(!selected||!lesion)return;const a:Assessment={id:'A-'+String(Date.now()).slice(-6),date:today(),time:now(),exudate,exudateAmount:amount,bed:bedState,perilesional:peri,infection,pain,length,width,depth,notes,coverage};updatePatient(selected.id,p=>({...p,last:'Hoje, '+now(),status:'Em acompanhamento',lesions:p.lesions.map(l=>l.id===lesion.id?{...l,assessments:[a,...l.assessments]}:l)}));resetAssessment();setModal(null)}
+ function addLesion(){if(!selected||!lesionName.trim()||(!location.trim()&&!bodySites.length))return;const id='L-'+String(Date.now()).slice(-6);const anatomical=bodySites.join(', ');updatePatient(selected.id,p=>({...p,lesions:[...p.lesions,{id,name:lesionName.trim(),location:location.trim()||anatomical,bodySites,etiology,started:today(),assessments:[]}]}));setSelectedLesionId(id);resetLesion();setModal(null)}
+ function addAssessment(){if(!selected||!lesion)return;const a:Assessment={id:'A-'+String(Date.now()).slice(-6),date:today(),time:now(),exudate,exudateAmount:amount,bed:bedState,perilesional:peri,infection,pain,length,width,depth,notes,coverage,photos:photoDrafts};updatePatient(selected.id,p=>({...p,last:'Hoje, '+now(),status:'Em acompanhamento',lesions:p.lesions.map(l=>l.id===lesion.id?{...l,assessments:[a,...l.assessments]}:l)}));resetAssessment();setModal(null)}
+ async function addPhotos(files:FileList|null){if(!files)return;const incoming:Photo[]=[];for(const file of Array.from(files)){if(!file.type.startsWith('image/'))continue;try{const bitmap=await createImageBitmap(file);const scale=Math.min(1,1200/Math.max(bitmap.width,bitmap.height));const canvas=document.createElement('canvas');canvas.width=Math.round(bitmap.width*scale);canvas.height=Math.round(bitmap.height*scale);const ctx=canvas.getContext('2d');if(!ctx)continue;ctx.drawImage(bitmap,0,0,canvas.width,canvas.height);const dataUrl=canvas.toDataURL('image/jpeg',0.68);incoming.push({id:'PH-'+String(Date.now())+'-'+incoming.length,name:file.name,dataUrl,capturedAt:now()});bitmap.close()}catch{}}setPhotoDrafts(prev=>[...prev,...incoming])}
  function toggle(list:string[],value:string,set:(v:string[])=>void){set(list.includes(value)?list.filter(x=>x!==value):[...list,value])}
  function openPatient(id:string){setSelectedId(id);setSelectedLesionId(null);setPage('Pacientes')}
  function closeProfile(){setSelectedId(null);setSelectedLesionId(null)}
