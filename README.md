@@ -32,3 +32,7 @@ npm run dev
 
 ## CI
 O GitHub Actions executa npm install e npm run build em pushes e pull requests para main.
+
+
+## Atualização de interface
+O modelo corporal 3D é carregado sob demanda para reduzir o JavaScript inicial. A compilação e a revisão das dependências são verificadas pelo workflow de CI.
