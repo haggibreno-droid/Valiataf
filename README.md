@@ -11,8 +11,9 @@ npm run dev
 ## Funcionalidades demonstrativas
 - [x] Painel, cadastro e pesquisa de pacientes fictícios.
 - [x] Perfil individual com múltiplas lesões.
-- [x] Mapa anatômico clicável, com vistas anterior e posterior e seleção de múltiplas regiões.
+- [x] Modelo corporal 3D interativo, rotacionável e aproximável, com marcação de pontos na superfície e registro de região anatômica + coordenadas locais.
 - [x] Registro de etiologia, exsudato, leito, área perilesional, sinais observados, medidas, dor e materiais/coberturas.
+- [x] Cálculo demonstrativo da área aproximada (comprimento × largura) e variação percentual frente à primeira área medida, mostrando também aumento de área.
 - [x] Histórico cronológico de avaliações por lesão.
 - [x] Anexar imagens às avaliações (compressão no navegador) e comparar duas imagens da mesma lesão.
 - [x] Persistência local demonstrativa via localStorage.
