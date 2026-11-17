@@ -70,3 +70,6 @@ main{background:transparent}header{background:#ffffffd9;border-bottom:1px solid 
 @media(max-width:1050px){.content{padding:26px 22px}.body3d-stage{height:500px}}
 @media(max-width:700px){.content{padding:20px 13px}.welcome{padding:19px 17px;min-height:126px;border-radius:14px}.welcome:after{right:-110px}.welcome:before{right:2%;width:75px;height:75px}.welcome h1{font-size:23px}.metrics{gap:9px}.metric{padding:13px}.metric-icon{width:32px;height:32px}.metric>b{font-size:24px}.panel{padding:15px;border-radius:13px}.body3d-wrap{padding:11px;border-radius:13px}.body3d-stage{height:440px}.body3d-toolbar button{flex:1;padding:8px 7px}.body3d-hint{line-height:1.5}.shortcutgrid button{min-height:66px}}
 @media(max-width:420px){.body3d-stage{height:380px}.welcome{gap:8px}.welcome>.primary{padding:9px}.demo{font-size:7px}}
+
+.body3d-loading{min-height:300px;display:grid;place-items:center;border:1px solid #e5eee8;border-radius:13px;background:linear-gradient(145deg,#fff,#f1f8f3);color:#71877d;font-size:12px;letter-spacing:.2px}
+@media(max-width:700px){.body3d-loading{min-height:240px}}
