@@ -1,5 +1,5 @@
 import { useMemo, useState, type ReactNode } from 'react'
-import { Activity, ArrowLeft, ArrowUpRight, Bell, CalendarDays, Camera, Check, ChevronDown, ClipboardList, Clock3, FileText, HeartPulse, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, ShieldCheck, Users, X, Ruler, Stethoscope, Droplets, History } from 'lucide-react'
+import { Activity, ArrowLeft, ArrowUpRight, Bell, CalendarDays, Camera, Check, ChevronDown, ClipboardList, Clock3, FileText, HeartPulse, LayoutDashboard, Menu, MoreHorizontal, Plus, Search, ShieldCheck, Users, X, History } from 'lucide-react'
 
 type Assessment = {
   id: string; date: string; time: string; exudate: string; exudateAmount: string;
