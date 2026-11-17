@@ -1,35 +1,33 @@
 # Valiataf · LATAF
 
-Plataforma demonstrativa para apoiar o registro e o acompanhamento longitudinal de feridas.
+Protótipo de apoio ao registro e acompanhamento longitudinal de feridas, desenvolvido para discussão de fluxo com a LATAF.
 
-## Objetivo
-Construir um protótipo funcional para validação de fluxos com a LATAF, antes de qualquer uso institucional ou com dados reais.
-
-## Tecnologias
-- React + Vite + TypeScript
-- Lucide React
-- CSS responsivo
-
-## Executar localmente
+## Rodar localmente
 ```bash
 npm install
 npm run dev
 ```
 
-## Funcionalidades do protótipo
-- [x] Painel demonstrativo com indicadores
-- [x] Lista pesquisável de pacientes fictícios
-- [x] Cadastro local de pacientes fictícios
-- [x] Perfil individual do paciente
-- [x] Cadastro de múltiplas lesões por paciente
-- [x] Identificação anatômica e etiologia da lesão
-- [x] Formulário demonstrativo de avaliação: exsudato, leito, área perilesional, sinais observados, medidas, dor e observações
-- [x] Checklist de materiais e coberturas utilizados
-- [x] Histórico cronológico de avaliações por lesão
-- [ ] Anexos fotográficos e comparação temporal
-- [ ] Exportação de relatórios
-- [ ] Persistência em banco de dados e autenticação
-- [ ] Sincronização offline
+## Funcionalidades demonstrativas
+- [x] Painel, cadastro e pesquisa de pacientes fictícios.
+- [x] Perfil individual com múltiplas lesões.
+- [x] Mapa anatômico clicável, com vistas anterior e posterior e seleção de múltiplas regiões.
+- [x] Registro de etiologia, exsudato, leito, área perilesional, sinais observados, medidas, dor e materiais/coberturas.
+- [x] Histórico cronológico de avaliações por lesão.
+- [x] Anexar imagens às avaliações (compressão no navegador) e comparar duas imagens da mesma lesão.
+- [x] Persistência local demonstrativa via localStorage.
+- [x] Relatório consolidado com opção Imprimir / Salvar como PDF pelo navegador.
+- [x] PWA com cache do app-shell para reabertura offline após a primeira visita em navegadores compatíveis.
+- [x] Esboço de schema PostgreSQL/Supabase com RLS e bucket privado em supabase/.
 
-## Segurança e escopo
-Este repositório contém apenas um protótipo com dados fictícios em memória. Não inserir dados pessoais, identificadores ou fotografias de pacientes reais. As opções de checklist são exemplos para prototipagem, não protocolos ou recomendações clínicas. A terminologia, os campos e os fluxos devem ser validados por profissionais responsáveis da LATAF e do HULW. A implantação clínica depende de aprovação institucional, avaliação de segurança, governança de dados, controle de acesso, armazenamento privado, auditoria e conformidade com a LGPD.
+## Limites importantes
+- Os dados e fotografias ficam somente no navegador deste dispositivo. Não há servidor, autenticação, backup, controle institucional de acesso nem sincronização entre dispositivos.
+- O cache offline só disponibiliza a interface já carregada; não é sincronização offline segura.
+- O PDF é uma impressão demonstrativa, não documento clínico certificado nem integração com prontuário.
+- O SQL em supabase/schema.sql é uma proposta para revisão, não foi aplicado ou testado em projeto Supabase.
+- Não inserir dados pessoais, identificadores ou imagens de pacientes reais.
+- Opções clínicas são exemplos para prototipagem e precisam de validação da equipe LATAF.
+- A implantação exige aprovação institucional, governança de dados, análise de segurança, LGPD, validação clínica e testes de RLS.
+
+## CI
+O GitHub Actions executa npm install e npm run build em pushes e pull requests para main.
