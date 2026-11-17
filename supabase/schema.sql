@@ -23,7 +23,7 @@ create table if not exists public.patients (
 create table if not exists public.lesions (
  id uuid primary key default gen_random_uuid(), patient_id uuid not null references public.patients(id),
  lesion_code text not null, etiology text not null, anatomical_sites text[] not null default '{}',
- anatomical_notes text, started_at date not null default current_date,
+ anatomical_notes text, body_markers jsonb not null default '[]'::jsonb check(jsonb_typeof(body_markers)='array'), initial_area_cm2 numeric(10,2) check(initial_area_cm2 is null or initial_area_cm2>0), started_at date not null default current_date,
  created_by uuid not null references auth.users(id), created_at timestamptz not null default now(),
  unique(patient_id,lesion_code)
 );
@@ -32,7 +32,7 @@ create table if not exists public.assessments (
  assessed_at timestamptz not null default now(), exudate_type text, exudate_amount text,
  wound_bed text[] not null default '{}', periwound_findings text[] not null default '{}',
  observed_signs text[] not null default '{}', length_cm numeric(7,2) check(length_cm is null or length_cm>=0),
- width_cm numeric(7,2) check(width_cm is null or width_cm>=0), depth_cm numeric(7,2) check(depth_cm is null or depth_cm>=0),
+ width_cm numeric(7,2) check(width_cm is null or width_cm>=0), area_cm2 numeric(10,2) check(area_cm2 is null or area_cm2>0), depth_cm numeric(7,2) check(depth_cm is null or depth_cm>=0),
  pain_score smallint check(pain_score between 0 and 10), materials_and_coverings text[] not null default '{}',
  clinical_notes text, created_by uuid not null references auth.users(id), created_at timestamptz not null default now()
 );
@@ -121,3 +121,8 @@ create policy valiat_af_photo_insert on storage.objects for insert to authentica
 
 -- Criar organização e primeiro owner por procedimento administrativo aprovado.
 -- Revisar permissões, retenção, backups, MFA, logs e LGPD antes de qualquer piloto.
+
+-- Upgrade-safe columns for installations that already applied an earlier draft.
+alter table public.lesions add column if not exists body_markers jsonb not null default '[]'::jsonb;
+alter table public.lesions add column if not exists initial_area_cm2 numeric(10,2);
+alter table public.assessments add column if not exists area_cm2 numeric(10,2);
