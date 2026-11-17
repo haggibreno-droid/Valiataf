@@ -8,6 +8,7 @@ type Props = {
   markers:BodyMarker[]
   onMark:(marker:BodyMarker)=>void
   onRemove:(id:string)=>void
+  readOnly?:boolean
 }
 
 function regionForHit(object:THREE.Object3D, point:THREE.Vector3):string {
@@ -24,7 +25,7 @@ function regionForHit(object:THREE.Object3D, point:THREE.Vector3):string {
   return part+' '+side
 }
 
-export default function BodyModel3D({markers,onMark,onRemove}:Props){
+export default function BodyModel3D({markers,onMark,onRemove,readOnly=false}:Props){
   const host=useRef<HTMLDivElement>(null)
   const markRef=useRef(onMark)
   const markersRef=useRef(markers)
@@ -96,6 +97,7 @@ export default function BodyModel3D({markers,onMark,onRemove}:Props){
     let down:{x:number;y:number}|null=null
     const pointerDown=(e:PointerEvent)=>{down={x:e.clientX,y:e.clientY}}
     const pointerUp=(e:PointerEvent)=>{
+      if(readOnly){down=null;return}
       if(!down)return
       const moved=Math.hypot(e.clientX-down.x,e.clientY-down.y);down=null
       if(moved>5)return
@@ -137,6 +139,6 @@ export default function BodyModel3D({markers,onMark,onRemove}:Props){
     <div className="bodymap-head"><b>Modelo corporal 3D</b><span>Clique na superfície e arraste para girar</span></div>
     <div className="body3d-stage" ref={host}/>
     <div className="body3d-hint">Role para aproximar · Arraste para girar · Selecione a superfície correspondente</div>
-    <div className="body3d-selected">{markers.length?markers.map(m=><button type="button" key={m.id} onClick={()=>onRemove(m.id)}>{m.region} · ponto marcado ×</button>):<small>Nenhum ponto marcado</small>}</div>
+    <div className="body3d-selected">{markers.length?markers.map(m=>readOnly?<span key={m.id}>{m.region} · ponto marcado</span>:<button type="button" key={m.id} onClick={()=>onRemove(m.id)}>{m.region} · ponto marcado ×</button>):<small>Nenhum ponto marcado</small>}</div>
   </div>
 }
