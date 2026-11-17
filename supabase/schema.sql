@@ -96,10 +96,16 @@ drop policy if exists assessment_read on public.assessments;
 create policy assessment_read on public.assessments for select to authenticated using(public.can_access_lesion(lesion_id));
 drop policy if exists assessment_insert on public.assessments;
 create policy assessment_insert on public.assessments for insert to authenticated with check(public.can_manage_lesion(lesion_id) and created_by=auth.uid());
-drop policy if exists photo_read on public.assessment_photos;
+create or replace function public.can_manage_assessment(target_assessment uuid)
+returns boolean language sql stable security definer set search_path=public
+as $ select exists(select 1 from public.assessments a where a.id=target_assessment and public.can_manage_lesion(a.lesion_id)); $;
+create or replace function public.can_manage_org_text(target_org text)
+returns boolean language sql stable security definer set search_path=public
+as $ select exists(select 1 from public.organization_memberships m where m.organization_id::text=target_org and m.user_id=auth.uid() and m.active and m.role in ('owner','coordinator','nurse')); $;
+\ndrop policy if exists photo_read on public.assessment_photos;
 create policy photo_read on public.assessment_photos for select to authenticated using(public.can_access_assessment(assessment_id));
 drop policy if exists photo_insert on public.assessment_photos;
-create policy photo_insert on public.assessment_photos for insert to authenticated with check(public.can_access_assessment(assessment_id) and created_by=auth.uid());
+create policy photo_insert on public.assessment_photos for insert to authenticated with check(public.can_manage_assessment(assessment_id) and created_by=auth.uid());
 
 -- Avaliações e metadados fotográficos não recebem policies UPDATE/DELETE: append-only.
 insert into storage.buckets(id,name,public,file_size_limit,allowed_mime_types)
@@ -109,7 +115,7 @@ create or replace function public.is_org_member_text(target_org text)
 returns boolean language sql stable security definer set search_path=public
 as $$ select exists(select 1 from public.organization_memberships m where m.organization_id::text=target_org and m.user_id=auth.uid() and m.active); $$;
 drop policy if exists valiat_af_photo_read on storage.objects;
-create policy valiat_af_photo_read on storage.objects for select to authenticated using(bucket_id='valiat-af-private' and public.is_org_member_text(split_part(name,'/',1)));
+create policy valiat_af_photo_read on storage.objects for select to authenticated using(bucket_id='valiat-af-private' and public.can_manage_org_text(split_part(name,'/',1)));
 drop policy if exists valiat_af_photo_insert on storage.objects;
 create policy valiat_af_photo_insert on storage.objects for insert to authenticated with check(bucket_id='valiat-af-private' and public.is_org_member_text(split_part(name,'/',1)));
 
