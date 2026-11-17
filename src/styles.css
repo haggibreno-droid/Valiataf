@@ -18,3 +18,55 @@
 
 .body3d-wrap{border:1px solid #e7efeb;border-radius:12px;padding:13px;background:#fbfdfc;margin:8px 0 16px}.body3d-stage{height:390px;max-width:100%;overflow:hidden;border-radius:10px;background:#f8fbf9;touch-action:pan-y}.body3d-stage canvas{display:block;width:100%;height:100%;cursor:grab;outline:none}.body3d-stage canvas:active{cursor:grabbing}.body3d-hint{font-size:9px;color:#91a09a;text-align:center;padding:7px 0}.body3d-selected{display:flex;gap:6px;flex-wrap:wrap}.body3d-selected button{border:1px solid #ead5d5;background:#fff7f7;color:#9d565b;border-radius:20px;padding:5px 9px;font-size:9px}.body3d-selected small{font-size:10px;color:#9aa6a1}.area-estimate{display:flex;flex-direction:column;gap:4px;padding:12px 14px;background:#f2f8f5;border:1px solid #e0eee7;border-radius:10px;margin:4px 0 14px}.area-estimate b{font-size:10px;color:#617c70}.area-estimate strong{font:700 18px Manrope;color:#347d6d}.area-estimate small{font-size:9px;color:#82938a;line-height:1.5}.healing-progress{display:grid;gap:8px;margin-top:17px;padding:14px 15px;background:#f5faf7;border:1px solid #e3eee8;border-radius:10px}.healing-progress>div:first-child{display:grid;gap:4px}.healing-progress span{font-size:9px;letter-spacing:.8px;color:#81958a;font-weight:700}.healing-progress b{font:700 17px Manrope;color:#367e6d}.healing-progress small{font-size:9px;line-height:1.5;color:#82918a}.healing-bar{height:7px;border-radius:10px;background:#e5ece8;overflow:hidden}.healing-bar i{height:100%;display:block;border-radius:10px;background:#5caa8f;transition:width .25s ease}
 @media(max-width:700px){.body3d-stage{height:330px}}
+
+
+/* Valiataf visual refresh — refined clinical workspace */
+:root{--ink:#183b38;--muted:#718681;--line:#e3ece7;--mint:#eaf4ef;--accent:#347e70;--accent-dark:#205e55}
+body{background:#f3f7f5;color:var(--ink)}
+.shell{background:linear-gradient(135deg,#f6f9f7 0%,#f1f6f3 55%,#f7f9f7 100%)}
+.sidebar{background:linear-gradient(180deg,#173f3b 0%,#123632 100%);border-right:1px solid #234d47;box-shadow:8px 0 30px #173d3510}
+.brand{padding:27px 22px 24px}.brandmark{background:linear-gradient(145deg,#e1f2e9,#a9d5c4);color:#1c6658;box-shadow:0 7px 18px #061f1a40}
+.brand b{color:#f2fbf6}.brand b span{color:#9dd5be}.brand small{color:#9cbdb0;letter-spacing:1.7px}
+.workspace{background:#ffffff0d;border:1px solid #ffffff18;border-radius:12px;margin:0 14px 26px;padding:12px}.workspace-icon{background:#d6eee2;color:#245d50;border-radius:10px}
+.workspace b{color:#edf8f2}.workspace small{color:#9dbbb0}.workspace>svg{color:#9dbbb0}
+.nav-caption{color:#83a89a;padding-left:22px}.nav-item{color:#c0d4cb;border-radius:9px;margin:3px 10px;width:calc(100% - 20px);padding:11px 12px}.nav-item:hover{background:#ffffff0d;color:#fff}.nav-item.selected{background:linear-gradient(90deg,#d7eee3,#c5e4d5);color:#205d50;box-shadow:0 4px 14px #061f1a22}
+.side-bottom{padding:14px}.security{background:#ffffff0d;border:1px solid #ffffff15;border-radius:11px;color:#a9d7c1}.security b{color:#e1f3e9}.security small{color:#9dbbb0}.userline{border-top-color:#ffffff1a}.userline b{color:#f0f7f3}.userline small{color:#9dbbb0}.userline>svg{color:#9dbbb0}
+main{background:transparent}header{background:#ffffffd9;border-bottom:1px solid #e5ede8;backdrop-filter:blur(16px)}.crumb{color:#526c63}.crumb span{color:#b0c1b8}.demo{background:#edf6f0;color:#548674;border:1px solid #dfede4;border-radius:30px}
+.content{max-width:1540px;padding:39px 42px 30px}
+.welcome{position:relative;overflow:hidden;isolation:isolate;min-height:142px;padding:25px 28px;margin-bottom:22px;border:1px solid #e1ece6;border-radius:18px;background:linear-gradient(105deg,#fff 0%,#f7fbf8 60%,#eaf5ef 100%);box-shadow:0 8px 26px #244c3b08}
+.welcome:after{content:"";position:absolute;z-index:-1;right:5%;top:-92px;width:270px;height:270px;border-radius:50%;border:1px solid #c7e0d3;box-shadow:0 0 0 22px #dceee51c,0 0 0 48px #dceee51a,0 0 0 76px #dceee516}
+.welcome:before{content:"";position:absolute;z-index:-1;right:13%;top:12px;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff 0%,#d7eee2 48%,#b4d9c8 100%);opacity:.62;filter:blur(.2px)}
+.welcome h1{font-size:30px;color:#183e39;letter-spacing:-1.15px}.welcome p{font-size:12px;color:#7e938a}.welcome .eyebrow{color:#57917e}
+.welcome>.primary{padding:12px 17px;border-radius:10px;background:linear-gradient(135deg,#398d79,#286d60);box-shadow:0 8px 18px #286d6028}
+.metrics{gap:16px}.metric,.panel{border:1px solid #e4ece7;border-radius:15px;box-shadow:0 5px 20px #244c3b08;transition:transform .2s ease,box-shadow .2s ease}
+.metric{position:relative;overflow:hidden;padding:19px 20px;background:linear-gradient(145deg,#fff,#fbfdfb)}
+.metric:after{content:"";position:absolute;right:-24px;top:-28px;width:92px;height:92px;border-radius:50%;background:#eaf4ef;opacity:.7}
+.metric-icon{position:relative;z-index:1;width:39px;height:39px;border-radius:12px;background:linear-gradient(145deg,#e8f4ed,#d8ebe1);color:#3e8976}
+.metric>b{font-size:29px;color:#23463f}.metric>span{font-size:11px;color:#71877d}.metric>small{font-size:9px;color:#9aa9a1}
+.panel{padding:22px;background:#ffffffed}.panelhead{margin-bottom:19px}.panelhead h2{font-size:14px;color:#29483f}.panelhead p{font-size:10px;color:#91a098}
+.dashboard{gap:18px;margin-bottom:18px}.routine{background:linear-gradient(155deg,#fff,#f7fbf8)}
+.routine-total{padding:6px 0 16px}.routine-total b{font-size:31px;color:#2b7667}.routine-item{padding:14px 0}.dot{width:8px;height:8px;box-shadow:0 0 0 4px #eaf4ef}
+.shortcuts{margin-bottom:28px}.shortcutgrid{gap:14px}.shortcutgrid button{min-height:86px;padding:15px;border-radius:12px;background:linear-gradient(145deg,#fbfdfb,#f5faf7);border-color:#e5eee8;transition:all .2s ease}.shortcutgrid button:hover{transform:translateY(-2px);box-shadow:0 8px 20px #244c3b10;border-color:#bdd9ca}.shortcutgrid svg{color:#4d907c}.shortcutgrid b{font-size:11px;color:#34564b}.shortcutgrid small{font-size:9px;color:#8da098}
+.tablewrap table tbody tr:hover{background:#f3f9f5}
+.primary{background:linear-gradient(135deg,#398d79,#286d60);border-radius:10px}.primary:hover{background:#205f55}
+.search{background:#f8fbf9;border-radius:10px;border-color:#e4ece7}.search:focus-within{border-color:#91c3ad;box-shadow:0 0 0 3px #dcefe5}
+.profile-welcome{min-height:unset}.profile-heading .welcome{padding:21px 25px}
+.lesion-detail,.history-panel{box-shadow:0 8px 24px #244c3b08}
+.lesion-facts{gap:46px}
+.count-pill,.status.active{background:#e8f5ed;color:#43856e}
+.body3d-wrap{border:1px solid #dce9e2;border-radius:17px;padding:17px;background:linear-gradient(145deg,#fff 0%,#f5faf7 100%);box-shadow:inset 0 1px #fff,0 8px 24px #234b3b08;margin:18px 0}
+.bodymap-head{align-items:flex-start}.bodymap-head b{font-size:13px;color:#244c42}.body3d-subtitle{display:block!important;margin-top:5px;font-size:9px!important;color:#8a9e94!important}
+.body3d-live{display:inline-flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid #dceee3;border-radius:20px;background:#f0f8f3;color:#4c9078!important;font-size:8px!important;letter-spacing:.7px;font-weight:800}.body3d-live i{width:6px;height:6px;border-radius:50%;background:#53a783;box-shadow:0 0 0 3px #d9efe2}
+.body3d-toolbar{display:flex;gap:6px;margin:14px 0 9px}.body3d-toolbar button{border:1px solid #e0eae4;background:#fff;color:#71877d;border-radius:8px;padding:8px 13px;font-size:9px;font-weight:700;transition:all .18s}.body3d-toolbar button:hover{border-color:#a9cdb9;color:#3d806d}.body3d-toolbar button.active{background:#e8f4ed;border-color:#b6d8c5;color:#286e5c;box-shadow:inset 0 0 0 1px #d6eadf}
+.body3d-stage{height:560px;max-width:100%;border:1px solid #e5eee8;border-radius:13px;background:radial-gradient(ellipse at 50% 42%,#fff 0%,#f4f9f6 48%,#eaf2ed 100%);position:relative;isolation:isolate}
+.body3d-stage:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.34;background-image:linear-gradient(#cbdcd2 1px,transparent 1px),linear-gradient(90deg,#cbdcd2 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(ellipse at center,#000 0%,transparent 72%)}
+.body3d-stage canvas{position:relative;z-index:1}
+.body3d-hint{padding:11px 0 7px;color:#8b9d93;font-size:9px}
+.body3d-selected{padding-top:5px}.body3d-selected button{background:#fff1ef;border-color:#f1d7d3;color:#a65c57;padding:7px 10px}
+.healing-progress{background:linear-gradient(110deg,#f1f8f3,#f9fcfa);border-color:#e0eee5;border-radius:12px;padding:16px}
+.healing-progress b{color:#2e806b}
+.assessment-card{border-color:#e5eee8;border-radius:13px;background:#fdfefd}.assessment-date{padding:3px 0}
+.modal,.modal-wide{border:1px solid #e4eee7;box-shadow:0 24px 80px #173d3530;border-radius:18px}
+@media(max-width:1050px){.content{padding:26px 22px}.body3d-stage{height:500px}}
+@media(max-width:700px){.content{padding:20px 13px}.welcome{padding:19px 17px;min-height:126px;border-radius:14px}.welcome:after{right:-110px}.welcome:before{right:2%;width:75px;height:75px}.welcome h1{font-size:23px}.metrics{gap:9px}.metric{padding:13px}.metric-icon{width:32px;height:32px}.metric>b{font-size:24px}.panel{padding:15px;border-radius:13px}.body3d-wrap{padding:11px;border-radius:13px}.body3d-stage{height:440px}.body3d-toolbar button{flex:1;padding:8px 7px}.body3d-hint{line-height:1.5}.shortcutgrid button{min-height:66px}}
+@media(max-width:420px){.body3d-stage{height:380px}.welcome{gap:8px}.welcome>.primary{padding:9px}.demo{font-size:7px}}
