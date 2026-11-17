@@ -133,7 +133,6 @@ export default function BodyModel3D({markers,onMark,onRemove,readOnly=false}:Pro
       const shoulder=new THREE.Vector3(s*.39,1.12,0)
       const elbow=new THREE.Vector3(s*.54,.66,.005)
       const wrist=new THREE.Vector3(s*.62,.18,.025)
-      const palm=new THREE.Vector3(s*.64,.035,.04)
       addEllipsoid([s*.39,1.105,0],[.14,.16,.14],skin,'arm','Ombro')
       addSegment(shoulder,elbow,.115,.085,skin,'arm','Braço')
       addEllipsoid([s*.54,.66,.005],[.087,.09,.09],skinShade,'arm','Cotovelo')
