@@ -16,16 +16,20 @@ npm install
 npm run dev
 ```
 
-## Estado atual
-- [x] Estrutura inicial do frontend
-- [x] Painel demonstrativo
+## Funcionalidades do protótipo
+- [x] Painel demonstrativo com indicadores
 - [x] Lista pesquisável de pacientes fictícios
 - [x] Cadastro local de pacientes fictícios
-- [ ] Cadastro de lesões por paciente
-- [ ] Formulário de avaliação clínica
-- [ ] Registro de coberturas e condutas
-- [ ] Linha do tempo e fotografias demonstrativas
+- [x] Perfil individual do paciente
+- [x] Cadastro de múltiplas lesões por paciente
+- [x] Identificação anatômica e etiologia da lesão
+- [x] Formulário demonstrativo de avaliação: exsudato, leito, área perilesional, sinais observados, medidas, dor e observações
+- [x] Checklist de materiais e coberturas utilizados
+- [x] Histórico cronológico de avaliações por lesão
+- [ ] Anexos fotográficos e comparação temporal
 - [ ] Exportação de relatórios
+- [ ] Persistência em banco de dados e autenticação
+- [ ] Sincronização offline
 
-## Segurança
-Este repositório contém apenas um protótipo. Não inserir dados pessoais, identificadores ou fotografias de pacientes reais. A implantação clínica depende de aprovação institucional, avaliação de segurança, governança de dados e validação dos formulários pela equipe responsável.
+## Segurança e escopo
+Este repositório contém apenas um protótipo com dados fictícios em memória. Não inserir dados pessoais, identificadores ou fotografias de pacientes reais. As opções de checklist são exemplos para prototipagem, não protocolos ou recomendações clínicas. A terminologia, os campos e os fluxos devem ser validados por profissionais responsáveis da LATAF e do HULW. A implantação clínica depende de aprovação institucional, avaliação de segurança, governança de dados, controle de acesso, armazenamento privado, auditoria e conformidade com a LGPD.
