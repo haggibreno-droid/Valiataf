@@ -11,6 +11,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
       - run: npm install
+      - name: Audit dependency vulnerabilities
+        run: |
+          npm audit --json > npm-audit.json || true
+          node -e "const a=require('./npm-audit.json'); for (const [name,v] of Object.entries(a.vulnerabilities||{})) console.log(name+' | '+v.severity+' | direct='+v.isDirect+' | fixAvailable='+JSON.stringify(v.fixAvailable)+' | '+v.range)"
       - run: npm run build
