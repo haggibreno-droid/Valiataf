@@ -36,3 +36,7 @@ O GitHub Actions executa npm install e npm run build em pushes e pull requests p
 
 ## Atualização de interface
 O modelo corporal 3D é carregado sob demanda para reduzir o JavaScript inicial. A compilação e a revisão das dependências são verificadas pelo workflow de CI.
+
+
+## Segurança das dependências
+A árvore de ferramentas de desenvolvimento do Vite ainda é sinalizada pelo aviso GHSA-fc5q-39xc-vjpf em `picomatch` (ReDoS; versões até 4.0.7). Na data desta revisão, o registro npm consultado ainda aponta 4.0.7 como versão mais recente e o aviso não declara uma versão corrigida. A dependência é transitiva de ferramentas de build e não integra o bundle entregue ao navegador; por isso o CI audita também as dependências de produção separadamente. Não use padrões glob fornecidos por usuários como entrada de ferramentas de build.
