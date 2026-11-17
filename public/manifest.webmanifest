@@ -1,0 +1,11 @@
+{
+  "name": "Valiataf · LATAF",
+  "short_name": "Valiataf",
+  "description": "Protótipo demonstrativo de acompanhamento de feridas",
+  "lang": "pt-BR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f8f7",
+  "theme_color": "#f4f8f7"
+}
