@@ -7,6 +7,7 @@ export type BodyMarker = { id:string; region:string; x:number; y:number; z:numbe
 type Props = {
   markers:BodyMarker[]
   onMark:(marker:BodyMarker)=>void
+  onRemove:(id:string)=>void
 }
 
 function regionForHit(object:THREE.Object3D, point:THREE.Vector3):string {
@@ -23,10 +24,11 @@ function regionForHit(object:THREE.Object3D, point:THREE.Vector3):string {
   return part+' '+side
 }
 
-export default function BodyModel3D({markers,onMark}:Props){
+export default function BodyModel3D({markers,onMark,onRemove}:Props){
   const host=useRef<HTMLDivElement>(null)
   const markRef=useRef(onMark)
   const markersRef=useRef(markers)
+  const markerGroupRef=useRef<THREE.Group|null>(null)
   useEffect(()=>{markRef.current=onMark},[onMark])
   useEffect(()=>{markersRef.current=markers},[markers])
 
@@ -76,7 +78,7 @@ export default function BodyModel3D({markers,onMark}:Props){
     const floor=new THREE.Mesh(new THREE.CircleGeometry(1.45,48),new THREE.MeshBasicMaterial({color:'#eef4f0',transparent:true,opacity:.7}))
     floor.rotation.x=-Math.PI/2;floor.position.y=-1.82;floor.scale.set(1,.23,1);scene.add(floor)
 
-    const markerGroup=new THREE.Group();model.add(markerGroup)
+    const markerGroup=new THREE.Group();model.add(markerGroup);markerGroupRef.current=markerGroup
     const drawMarkers=()=>{
       markerGroup.clear()
       for(const m of markersRef.current){
@@ -119,18 +121,23 @@ export default function BodyModel3D({markers,onMark}:Props){
       renderer.domElement.removeEventListener('pointerdown',pointerDown)
       renderer.domElement.removeEventListener('pointerup',pointerUp)
       scene.traverse(o=>{if(o instanceof THREE.Mesh){o.geometry.dispose();const mats=Array.isArray(o.material)?o.material:[o.material];mats.forEach(m=>m.dispose())}})
-      renderer.dispose();if(el.contains(renderer.domElement))el.removeChild(renderer.domElement)
+      markerGroupRef.current=null;renderer.dispose();if(el.contains(renderer.domElement))el.removeChild(renderer.domElement)
     }
   },[])
   useEffect(()=>{
-    const group=host.current?.querySelector('canvas')
+    markersRef.current=markers
+    const group=markerGroupRef.current
     if(!group)return
-    // Markers are rendered in the scene loop through the latest ref; the effect keeps the live ref in sync.
+    group.clear()
+    for(const m of markers){
+      const dot=new THREE.Mesh(new THREE.SphereGeometry(.045,16,12),new THREE.MeshBasicMaterial({color:'#b74f55'}))
+      dot.position.set(m.x,m.y,m.z);group.add(dot)
+    }
   },[markers])
   return <div className="body3d-wrap">
     <div className="bodymap-head"><b>Modelo corporal 3D</b><span>Clique na superfície e arraste para girar</span></div>
     <div className="body3d-stage" ref={host}/>
     <div className="body3d-hint">Role para aproximar · Arraste para girar · Selecione a superfície correspondente</div>
-    <div className="body3d-selected">{markers.length?markers.map(m=><button type="button" key={m.id} onClick={()=>markRef.current({ ...m, id:'REMOVE-'+m.id, region:'__remove__' })}>{m.region} · ponto marcado ×</button>):<small>Nenhum ponto marcado</small>}</div>
+    <div className="body3d-selected">{markers.length?markers.map(m=><button type="button" key={m.id} onClick={()=>onRemove(m.id)}>{m.region} · ponto marcado ×</button>):<small>Nenhum ponto marcado</small>}</div>
   </div>
 }
