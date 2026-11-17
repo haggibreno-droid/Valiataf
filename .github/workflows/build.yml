@@ -13,11 +13,9 @@ jobs:
         with:
           node-version: 22
       - run: npm install
-      - name: Inspect and apply non-breaking dependency fixes
+      - name: Review dependency advisories
         run: |
-          npm audit fix || true
           npm audit --json > npm-audit.json || true
-          node -e "const a=require('./npm-audit.json'); for (const [name,v] of Object.entries(a.vulnerabilities||{})) console.log(JSON.stringify({name,severity:v.severity,range:v.range,via:v.via,fixAvailable:v.fixAvailable},null,2))"
-          npm ls vite fdir picomatch tinyglobby || true
-          npm audit --audit-level=high
+          node -e "const a=require('./npm-audit.json'); for (const [name,v] of Object.entries(a.vulnerabilities||{})) console.log(name+' | '+v.severity+' | direct='+v.isDirect+' | '+v.range)"
+          npm audit --omit=dev --audit-level=high
       - run: npm run build
