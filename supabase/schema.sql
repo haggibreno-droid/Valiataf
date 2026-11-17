@@ -115,9 +115,9 @@ create or replace function public.is_org_member_text(target_org text)
 returns boolean language sql stable security definer set search_path=public
 as $$ select exists(select 1 from public.organization_memberships m where m.organization_id::text=target_org and m.user_id=auth.uid() and m.active); $$;
 drop policy if exists valiat_af_photo_read on storage.objects;
-create policy valiat_af_photo_read on storage.objects for select to authenticated using(bucket_id='valiat-af-private' and public.can_manage_org_text(split_part(name,'/',1)));
+create policy valiat_af_photo_read on storage.objects for select to authenticated using(bucket_id='valiat-af-private' and public.is_org_member_text(split_part(name,'/',1)));
 drop policy if exists valiat_af_photo_insert on storage.objects;
-create policy valiat_af_photo_insert on storage.objects for insert to authenticated with check(bucket_id='valiat-af-private' and public.is_org_member_text(split_part(name,'/',1)));
+create policy valiat_af_photo_insert on storage.objects for insert to authenticated with check(bucket_id='valiat-af-private' and public.can_manage_org_text(split_part(name,'/',1)));
 
 -- Criar organização e primeiro owner por procedimento administrativo aprovado.
 -- Revisar permissões, retenção, backups, MFA, logs e LGPD antes de qualquer piloto.
