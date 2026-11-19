@@ -1,5 +1,7 @@
 import { initializeApp, getApps } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
+import { getFirestore } from 'firebase/firestore'
+import { getStorage } from 'firebase/storage'
 
 const config = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -9,10 +11,9 @@ const config = {
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   appId: import.meta.env.VITE_FIREBASE_APP_ID,
 }
-
 export const firebaseConfigured = Object.values(config).every(Boolean)
-export const firebaseApp = firebaseConfigured
-  ? (getApps()[0] ?? initializeApp(config))
-  : null
+export const firebaseApp = firebaseConfigured ? (getApps()[0] ?? initializeApp(config)) : null
 export const firebaseAuth = firebaseApp ? getAuth(firebaseApp) : null
+export const firebaseDb = firebaseApp ? getFirestore(firebaseApp) : null
+export const firebaseStorage = firebaseApp ? getStorage(firebaseApp) : null
 if (firebaseAuth) firebaseAuth.languageCode = 'pt-BR'
