@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent, type ReactNode } from 'react'
 import { onAuthStateChanged, type User } from 'firebase/auth'
 import { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, orderBy, query, serverTimestamp, setDoc, updateDoc, where } from 'firebase/firestore'
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
@@ -21,7 +21,7 @@ const signs=['Odor','Calor','Rubor','Edema','Dor aumentada','Drenagem purulenta'
 const covers=['Gaze estéril','Alginato','Hidrofibra','Hidrocoloide','Hidrogel','Espuma','Espuma com silicone','Carvão ativado','PHMB','Cobertura não aderente','Filme transparente','Bandagem']
 const today=()=>new Date().toLocaleDateString('pt-BR')
 function ToggleList({items,value,onChange}:{items:string[];value:string[];onChange:(v:string[])=>void}){return <div className="chips">{items.map(x=><button type="button" key={x} className={value.includes(x)?'chip active':'chip'} onClick={()=>onChange(value.includes(x)?value.filter(y=>y!==x):[...value,x])}>{x}</button>)}</div>}
-function Field({label,children}:{label:string;children:React.ReactNode}){return <label className="field"><span>{label}</span>{children}</label>}
+function Field({label,children}:{label:string;children:ReactNode}){return <label className="field"><span>{label}</span>{children}</label>}
 export default function App(){
  const [user,setUser]=useState<User|null>(null),[authReady,setAuthReady]=useState(false),[authMode,setAuthMode]=useState<'login'|'register'>('login'),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[fullName,setFullName]=useState(''),[authError,setAuthError]=useState(''),[notice,setNotice]=useState('')
  const [page,setPage]=useState('Visão geral'),[patients,setPatients]=useState<Patient[]>([]),[wounds,setWounds]=useState<Wound[]>([]),[assessments,setAssessments]=useState<Assessment[]>([]),[members,setMembers]=useState<Member[]>([]),[posts,setPosts]=useState<Post[]>([]),[friends,setFriends]=useState<Friend[]>([]),[messages,setMessages]=useState<Message[]>([])
