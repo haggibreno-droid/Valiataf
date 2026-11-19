@@ -1,34 +1,31 @@
-# Valiataf · LATAF
+# Valiataf · LATAF UFPB
 
-Protótipo de apoio ao registro e acompanhamento longitudinal de feridas, desenvolvido para discussão de fluxo com a LATAF.
+Aplicação React + Vite + TypeScript com Firebase Authentication, Firestore e Storage.
 
-## Rodar localmente
-```bash
-npm install
-npm run dev
-```
+## Módulos implementados nesta reconstrução
+- Autenticação por e-mail/senha e recuperação de senha.
+- Cadastro e pesquisa de pacientes.
+- Cadastro de lesões com localização anatômica e modelo corporal 3D.
+- Avaliações longitudinais com medidas, dor, exsudato, leito, pele perilesional, sinais observados, coberturas, notas e fotografias.
+- Histórico e galeria de evolução fotográfica.
+- Relatórios resumidos com impressão/PDF.
+- Perfis de membros, mural, solicitações de conexão e mensagens privadas.
+- Persistência em nuvem via Firestore e fotografias no Firebase Storage.
 
-## Funcionalidades demonstrativas
-- [x] Painel, cadastro e pesquisa de pacientes fictícios.
-- [x] Perfil individual com múltiplas lesões.
-- [x] Modelo corporal 3D interativo, rotacionável e aproximável, com marcação de pontos na superfície e registro de região anatômica + coordenadas locais.
-- [x] Registro de etiologia, exsudato, leito, área perilesional, sinais observados, medidas, dor e materiais/coberturas.
-- [x] Cálculo demonstrativo da área aproximada (comprimento × largura) e variação percentual frente à primeira área medida, mostrando também aumento de área.
-- [x] Histórico cronológico de avaliações por lesão.
-- [x] Anexar imagens às avaliações (compressão no navegador) e comparar duas imagens da mesma lesão.
-- [x] Persistência local demonstrativa via localStorage.
-- [x] Relatório consolidado com opção Imprimir / Salvar como PDF pelo navegador.
-- [x] PWA com cache do app-shell para reabertura offline após a primeira visita em navegadores compatíveis.
-- [x] Esboço de schema PostgreSQL/Supabase com RLS e bucket privado em supabase/.
+## Configuração
+1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
+2. Ative Authentication > Email/Password.
+3. Crie Firestore Database e Storage.
+4. Copie `.env.example` para `.env.local` e preencha as seis variáveis VITE_FIREBASE_* com a configuração do app Web.
+5. Publique as regras iniciais: `firebase deploy --only firestore:rules,storage`.
+6. Instale e execute: `npm install`, `npm run dev`. Valide com `npm run build`.
 
-## Limites importantes
-- Os dados e fotografias ficam somente no navegador deste dispositivo. Não há servidor, autenticação, backup, controle institucional de acesso nem sincronização entre dispositivos.
-- O cache offline só disponibiliza a interface já carregada; não é sincronização offline segura.
-- O PDF é uma impressão demonstrativa, não documento clínico certificado nem integração com prontuário.
-- O SQL em supabase/schema.sql é uma proposta para revisão, não foi aplicado ou testado em projeto Supabase.
-- Não inserir dados pessoais, identificadores ou imagens de pacientes reais.
-- Opções clínicas são exemplos para prototipagem e precisam de validação da equipe LATAF.
-- A implantação exige aprovação institucional, governança de dados, análise de segurança, LGPD, validação clínica e testes de RLS.
+## Hospedagem
+O build é gerado em `dist`. Configure as seis variáveis VITE_FIREBASE_* no provedor de hospedagem antes de publicar. A URL pública depende de habilitar o provedor e configurar as credenciais de produção.
 
-## CI
-O GitHub Actions executa npm install e npm run build em pushes e pull requests para main.
+## Segurança, LGPD e validação institucional
+Esta versão é uma reconstrução funcional em desenvolvimento, **não é um prontuário clínico homologado**. Não insira dados identificáveis nem fotografias reais de pacientes. Antes de qualquer uso real, a UFPB/LATAF precisa autorizar formalmente o tratamento, definir controlador/operador, base legal, consentimento quando aplicável, política de retenção, papéis e permissões, e realizar revisão independente das regras Firebase.
+
+As regras fornecidas são uma base inicial, não uma política final de produção. A leitura clínica ainda precisa ser limitada por equipe/papel e as solicitações de amizade/mensagens precisam de revisão contra abuso. O cadastro ainda não possui aprovação administrativa. O modelo 3D é um localizador aproximado, não substitui documentação anatômica validada. As opções clínicas devem ser revisadas pelos responsáveis da comissão.
+
+**Não utilize dados reais até concluir a revisão de segurança, testes de autorização, validação clínica e aprovação institucional.**
