@@ -1,34 +1,29 @@
-# Valiataf · LATAF
+# Valiataf · LATAF UFPB
 
-Protótipo de apoio ao registro e acompanhamento longitudinal de feridas, desenvolvido para discussão de fluxo com a LATAF.
+Aplicação React + Vite + TypeScript, com Supabase Auth, PostgreSQL, Row Level Security, Realtime e Storage privado. O desenvolvimento e deploy são independentes do Floot.
 
-## Rodar localmente
-```bash
-npm install
-npm run dev
-```
+## Funcionalidades
+- Cadastro, login e recuperação de senha por e-mail.
+- Perfis de membros, comunidade, publicações, comentários, curtidas e conexões.
+- Conversas privadas, notificações e atualização em tempo real.
+- Registros de pacientes pseudonimizados, lesões, avaliação longitudinal, modelo anatômico 3D e fotos privadas.
+- Biblioteca educativa de feridas com progresso e questões.
+- Relatórios para impressão/PDF.
 
-## Funcionalidades demonstrativas
-- [x] Painel, cadastro e pesquisa de pacientes fictícios.
-- [x] Perfil individual com múltiplas lesões.
-- [x] Modelo corporal 3D interativo, rotacionável e aproximável, com marcação de pontos na superfície e registro de região anatômica + coordenadas locais.
-- [x] Registro de etiologia, exsudato, leito, área perilesional, sinais observados, medidas, dor e materiais/coberturas.
-- [x] Cálculo demonstrativo da área aproximada (comprimento × largura) e variação percentual frente à primeira área medida, mostrando também aumento de área.
-- [x] Histórico cronológico de avaliações por lesão.
-- [x] Anexar imagens às avaliações (compressão no navegador) e comparar duas imagens da mesma lesão.
-- [x] Persistência local demonstrativa via localStorage.
-- [x] Relatório consolidado com opção Imprimir / Salvar como PDF pelo navegador.
-- [x] PWA com cache do app-shell para reabertura offline após a primeira visita em navegadores compatíveis.
-- [x] Esboço de schema PostgreSQL/Supabase com RLS e bucket privado em supabase/.
+## Configuração local
+1. Use Node.js 20 ou superior.
+2. Copie `.env.example` para `.env.local`.
+3. Preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` com os valores do projeto Supabase.
+4. Execute `npm install`, depois `npm run dev`.
+5. Para validar: `npm run build`.
 
-## Limites importantes
-- Os dados e fotografias ficam somente no navegador deste dispositivo. Não há servidor, autenticação, backup, controle institucional de acesso nem sincronização entre dispositivos.
-- O cache offline só disponibiliza a interface já carregada; não é sincronização offline segura.
-- O PDF é uma impressão demonstrativa, não documento clínico certificado nem integração com prontuário.
-- O SQL em supabase/schema.sql é uma proposta para revisão, não foi aplicado ou testado em projeto Supabase.
-- Não inserir dados pessoais, identificadores ou imagens de pacientes reais.
-- Opções clínicas são exemplos para prototipagem e precisam de validação da equipe LATAF.
-- A implantação exige aprovação institucional, governança de dados, análise de segurança, LGPD, validação clínica e testes de RLS.
+A publishable/anon key pode estar no frontend; a service-role key NUNCA pode ser usada no navegador. Toda tabela e bucket precisa de RLS/policies adequadas.
 
-## CI
-O GitHub Actions executa npm install e npm run build em pushes e pull requests para main.
+## Primeiro acesso da equipe clínica
+O schema cria a organização LATAF, mas não concede automaticamente acesso clínico a qualquer pessoa que se cadastre. Após o primeiro usuário autorizado criar conta, um administrador deve executar `supabase/bootstrap_owner.sql` no SQL Editor, substituindo o UUID pelo id do usuário em Authentication > Users. Depois, o owner pode cadastrar os demais membros por procedimento administrativo seguro.
+
+## Deploy
+Conecte este repositório ao Vercel (ou outro host estático) e configure as duas variáveis de ambiente acima. Em Supabase Authentication > URL Configuration, adicione a URL final do site em Site URL e Redirect URLs para recuperação de senha e autenticação.
+
+## Segurança e uso clínico
+Este é um protótipo acadêmico, não um prontuário homologado. Não registre dados identificáveis nem fotos reais de pacientes até aprovação institucional, revisão independente de RLS, definição de controlador/operador, base legal, consentimento quando aplicável, retenção, backup e recuperação. O armazenamento clínico é privado e acessível apenas a membros ativos da organização.
