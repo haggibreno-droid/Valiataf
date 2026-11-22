@@ -52,7 +52,7 @@ export default function App(){
   setProfiles(profileRows);setPosts((po.data||[]).map((p:Row)=>({...p,author:profileRows.find((x:Row)=>x.id===p.author_id)})))
   setPatients(pa.data||[]);setLesions(le.data||[]);setAssessments(as.data||[]);setPhotos(ph.data||[]);setFriendships(fr.data||[]);setNotifications(no.data||[]);setMemberships(mem.data||[]);setModules(mod.data||[]);setProgress(prog.data||[])
   const convIds=(cm.data||[]).map((x:Row)=>x.conversation_id)
-  if(convIds.length){const [cv,ms]=await Promise.all([c.from('conversations').select('*').in('id',convIds).order('created_at',{ascending:false}),c.from('messages').select('*').in('conversation_id',convIds).order('created_at')]);setMessages(ms.data||[])}else{setMessages([])}
+  if(convIds.length){const [,ms]=await Promise.all([c.from('conversations').select('*').in('id',convIds).order('created_at',{ascending:false}),c.from('messages').select('*').in('conversation_id',convIds).order('created_at')]);setMessages(ms.data||[])}else{setMessages([])}
   const [lk,qs]=await Promise.all([c.from('post_likes').select('post_id,user_id'),c.from('learning_questions').select('id,module_id,position,prompt,options,explanation').eq('published',true).order('position')]);setLikes(lk.data||[]);setQuestions(qs.data||[])
  },[user])
  useEffect(()=>{if(!user||!supabase)return;void loadData();const channel=supabase.channel('valiat-af-sync-'+user.id).on('postgres_changes',{event:'*',schema:'public'},()=>{void loadData()}).subscribe();return()=>{void supabase?.removeChannel(channel)}},[user,loadData])
