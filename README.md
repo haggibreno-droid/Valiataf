@@ -1,31 +1,29 @@
 # Valiataf · LATAF UFPB
 
-Aplicação React + Vite + TypeScript com Firebase Authentication, Firestore e Storage.
+Aplicação React + Vite + TypeScript, com Supabase Auth, PostgreSQL, Row Level Security, Realtime e Storage privado. O desenvolvimento e deploy são independentes do Floot.
 
-## Módulos implementados nesta reconstrução
-- Autenticação por e-mail/senha e recuperação de senha.
-- Cadastro e pesquisa de pacientes.
-- Cadastro de lesões com localização anatômica e modelo corporal 3D.
-- Avaliações longitudinais com medidas, dor, exsudato, leito, pele perilesional, sinais observados, coberturas, notas e fotografias.
-- Histórico e galeria de evolução fotográfica.
-- Relatórios resumidos com impressão/PDF.
-- Perfis de membros, mural, solicitações de conexão e mensagens privadas.
-- Persistência em nuvem via Firestore e fotografias no Firebase Storage.
+## Funcionalidades
+- Cadastro, login e recuperação de senha por e-mail.
+- Perfis de membros, comunidade, publicações, comentários, curtidas e conexões.
+- Conversas privadas, notificações e atualização em tempo real.
+- Registros de pacientes pseudonimizados, lesões, avaliação longitudinal, modelo anatômico 3D e fotos privadas.
+- Biblioteca educativa de feridas com progresso e questões.
+- Relatórios para impressão/PDF.
 
-## Configuração
-1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/).
-2. Ative Authentication > Email/Password.
-3. Crie Firestore Database e Storage.
-4. Copie `.env.example` para `.env.local` e preencha as seis variáveis VITE_FIREBASE_* com a configuração do app Web.
-5. Publique as regras iniciais: `firebase deploy --only firestore:rules,storage`.
-6. Instale e execute: `npm install`, `npm run dev`. Valide com `npm run build`.
+## Configuração local
+1. Use Node.js 20 ou superior.
+2. Copie `.env.example` para `.env.local`.
+3. Preencha `VITE_SUPABASE_URL` e `VITE_SUPABASE_PUBLISHABLE_KEY` com os valores do projeto Supabase.
+4. Execute `npm install`, depois `npm run dev`.
+5. Para validar: `npm run build`.
 
-## Hospedagem
-O build é gerado em `dist`. Configure as seis variáveis VITE_FIREBASE_* no provedor de hospedagem antes de publicar. A URL pública depende de habilitar o provedor e configurar as credenciais de produção.
+A publishable/anon key pode estar no frontend; a service-role key NUNCA pode ser usada no navegador. Toda tabela e bucket precisa de RLS/policies adequadas.
 
-## Segurança, LGPD e validação institucional
-Esta versão é uma reconstrução funcional em desenvolvimento, **não é um prontuário clínico homologado**. Não insira dados identificáveis nem fotografias reais de pacientes. Antes de qualquer uso real, a UFPB/LATAF precisa autorizar formalmente o tratamento, definir controlador/operador, base legal, consentimento quando aplicável, política de retenção, papéis e permissões, e realizar revisão independente das regras Firebase.
+## Primeiro acesso da equipe clínica
+O schema cria a organização LATAF, mas não concede automaticamente acesso clínico a qualquer pessoa que se cadastre. Após o primeiro usuário autorizado criar conta, um administrador deve executar `supabase/bootstrap_owner.sql` no SQL Editor, substituindo o UUID pelo id do usuário em Authentication > Users. Depois, o owner pode cadastrar os demais membros por procedimento administrativo seguro.
 
-As regras fornecidas são uma base inicial, não uma política final de produção. A leitura clínica ainda precisa ser limitada por equipe/papel e as solicitações de amizade/mensagens precisam de revisão contra abuso. O cadastro ainda não possui aprovação administrativa. O modelo 3D é um localizador aproximado, não substitui documentação anatômica validada. As opções clínicas devem ser revisadas pelos responsáveis da comissão.
+## Deploy
+Conecte este repositório ao Vercel (ou outro host estático) e configure as duas variáveis de ambiente acima. Em Supabase Authentication > URL Configuration, adicione a URL final do site em Site URL e Redirect URLs para recuperação de senha e autenticação.
 
-**Não utilize dados reais até concluir a revisão de segurança, testes de autorização, validação clínica e aprovação institucional.**
+## Segurança e uso clínico
+Este é um protótipo acadêmico, não um prontuário homologado. Não registre dados identificáveis nem fotos reais de pacientes até aprovação institucional, revisão independente de RLS, definição de controlador/operador, base legal, consentimento quando aplicável, retenção, backup e recuperação. O armazenamento clínico é privado e acessível apenas a membros ativos da organização.
